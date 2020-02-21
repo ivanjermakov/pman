@@ -11,5 +11,5 @@ Terminal **p**rocess **m**a**n**ager for Linux.
  
 ## Installation
 ```
-pip install pmn
+sudo pip install pmn
 ```
