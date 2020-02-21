@@ -1,6 +1,6 @@
 import click as click
 
-from application import Application
+from pmn.application import Application
 
 
 @click.command()
@@ -8,6 +8,3 @@ from application import Application
 @click.option('-c', '--config')
 def pmn(config):
     Application(config)
-
-
-pmn()

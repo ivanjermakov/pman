@@ -15,9 +15,6 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     python_requires='>=3',
-    install_requires=['anytree', 'psutil'],
-    entry_points='''
-        [console_scripts]
-        pmn=pmn.pmn:pmn
-    '''
+    install_requires=['anytree', 'psutil', 'click'],
+    scripts=['bin/pmn']
 )

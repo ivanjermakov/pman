@@ -3,11 +3,11 @@ from curses import window
 
 from anytree import AnyNode
 
-from format import string_format as sf
-from format.info_format import InfoFormat
-from format.process_tree import ProcessTree
-from view.abstract_process_view import AbstractProcessView
-from view.status_view import StatusView
+from pmn import string_format as sf
+from pmn.abstract_process_view import AbstractProcessView
+from pmn.info_format import InfoFormat
+from pmn.process_tree import ProcessTree
+from pmn.status_view import StatusView
 
 
 class TreeProcessView(AbstractProcessView):

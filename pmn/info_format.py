@@ -1,7 +1,7 @@
 import curses
 
-import format.string_format as sf
-from format.size import Size, Method, Align
+import pmn.string_format as sf
+from pmn.size import Size, Method, Align
 
 
 class InfoFormat:

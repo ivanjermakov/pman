@@ -1,1 +1,4 @@
-from pmn import pmn
+#!/usr/bin/python
+from pmn.pmn import pmn
+
+pmn()

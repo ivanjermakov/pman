@@ -1,6 +1,6 @@
 from math import floor
 
-import format.string_format as sf
+import pmn.string_format as sf
 
 
 class Method:

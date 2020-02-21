@@ -1,8 +1,8 @@
 import curses
 
-from format.info_format import InfoFormat
-from format.process_tree import ProcessTree
-from format.size import Size, Method, Unit, Align
+from pmn.info_format import InfoFormat
+from pmn.process_tree import ProcessTree
+from pmn.size import Size, Method, Unit, Align
 
 
 def colors():

@@ -4,10 +4,10 @@ from curses import window
 import psutil as ps
 from psutil import Process
 
-from format.info_format import InfoFormat
-from view.abstract_process_view import AbstractProcessView
-from view.search_view import SearchView
-from view.status_view import StatusView
+from pmn.abstract_process_view import AbstractProcessView
+from pmn.info_format import InfoFormat
+from pmn.search_view import SearchView
+from pmn.status_view import StatusView
 
 
 class ListProcessView(AbstractProcessView):

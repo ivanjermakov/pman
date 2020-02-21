@@ -1,7 +1,7 @@
 import curses
 from curses import window
 
-from format import string_format as sf
+from pmn import string_format as sf
 
 
 class StatusView:

@@ -2,8 +2,8 @@ import curses
 import importlib.util
 import os
 
-from view.list_process_view import ListProcessView
-from view.tree_process_view import TreeProcessView
+from pmn.list_process_view import ListProcessView
+from pmn.tree_process_view import TreeProcessView
 
 
 def _load_config(config_path):
@@ -21,7 +21,7 @@ def _load_config(config_path):
 
 # TODO: refactor
 def _init_config(config_path):
-    import pmn.config.default as default
+    import pmn.default_config as default
     if config_path:
         loaded = _load_config(config_path)
         default.colors = getattr(loaded, 'colors', default.colors)
@@ -38,6 +38,9 @@ class Application:
         self.screen = None
         self.views = []
         os.environ.setdefault('ESCDELAY', '25')
+        # faking terminal in order to make colors work
+        # https://github.com/xoreaxeaxeax/sandsifter/issues/14
+        os.environ['TERM'] = 'xterm-256color'
         self.config = _init_config(config)
 
         curses.wrapper(self._start)
