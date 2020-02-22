@@ -1,18 +1,26 @@
 import curses
 
+from anytree import Node
+from psutil import Process
+
+from pmn.application import Application
 from pmn.info_format import InfoFormat
+from pmn.list_process_view import ListProcessView
 from pmn.process_tree import ProcessTree
-from pmn.size import Size, Method, Unit, Align
+from pmn.size import *
+from pmn.tree_process_view import TreeProcessView
 
 
 def colors():
-    curses.init_pair(1, 0, 231)
-    curses.init_pair(2, 231, 0)
-    curses.init_pair(3, 2, -1)
-    curses.init_pair(4, 2, 0)
+    bg = 0
+    fg = 231
+    curses.init_pair(1, bg, fg)
+    curses.init_pair(2, fg, bg)
+    curses.init_pair(3, 2, fg)
+    curses.init_pair(4, 2, bg)
 
 
-def application_keymap(application):
+def application_keymap(application: Application):
     while True:
         key = application.views[application.current_view_index].loop()
 
@@ -22,7 +30,7 @@ def application_keymap(application):
             return
 
 
-def list_layout(process):
+def list_layout(process: Process):
     return [
         InfoFormat(str(process.pid), Size(4, Method.FIT, Unit.PX, Align.RIGHT)),
         InfoFormat(' '),
@@ -32,7 +40,7 @@ def list_layout(process):
     ]
 
 
-def list_keymap(list_view):
+def list_keymap(list_view: ListProcessView):
     while True:
         h, w = list_view.screen.getmaxyx()
         list_view.show()
@@ -52,13 +60,15 @@ def list_keymap(list_view):
                 list_view.clear_search()
         if key == ord('/'):
             list_view.search_loop()
+        if key == ord('r'):
+            list_view.update_processes()
         if key == curses.KEY_RESIZE:
             list_view.resize(h)
         if key in [ord('q'), 27, ord('t')]:
             return key
 
 
-def tree_layout(node):
+def tree_layout(node: Node):
     return [
         InfoFormat(str(node.process.pid), Size(4, Method.FIT, Unit.PX, Align.RIGHT)),
         InfoFormat(' '),
@@ -83,7 +93,7 @@ def tree_layout(node):
     ]
 
 
-def tree_keymap(tree_view):
+def tree_keymap(tree_view: TreeProcessView):
     while True:
         h, w = tree_view.screen.getmaxyx()
         tree_view.show()
