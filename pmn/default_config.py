@@ -61,7 +61,9 @@ def list_keymap(list_view: ListProcessView):
         if key == ord('/'):
             list_view.search_loop()
         if key == ord('r'):
-            list_view.update_processes()
+            list_view.refresh()
+        if key == ord('K'):
+            list_view.kill()
         if key == curses.KEY_RESIZE:
             list_view.resize(h)
         if key in [ord('q'), 27, ord('t')]:
@@ -108,11 +110,13 @@ def tree_keymap(tree_view: TreeProcessView):
             tree_view.first()
         if key == ord('G'):
             tree_view.last()
-        if key == curses.KEY_RESIZE:
-            tree_view.resize(h)
         if key == ord('r'):
             tree_view.refresh()
         if key == ord('c'):
             tree_view.trigger_collapse_current()
+        if key == ord('K'):
+            tree_view.kill()
+        if key == curses.KEY_RESIZE:
+            tree_view.resize(h)
         if key in [ord('q'), 27, ord('t')]:
             return key

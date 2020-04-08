@@ -1,7 +1,9 @@
 import curses
 from curses import window
+from time import sleep
 
 from anytree import AnyNode
+from psutil import AccessDenied
 
 from pmn import string_format as sf
 from pmn.abstract_process_view import AbstractProcessView
@@ -30,7 +32,7 @@ class TreeProcessView(AbstractProcessView):
         self.processes = self.tree.flatten()
         self.visible = list(filter(lambda n: ProcessTree.is_visible(n), self.processes))
         self.screen.erase()
-        if self.current_process_index > len(self.processes):
+        if self.current_process_index > len(self.processes) - 1:
             self.last()
         self.show()
 
@@ -94,3 +96,12 @@ class TreeProcessView(AbstractProcessView):
             self.current_process_index,
             self.pad
         )
+
+    def kill(self):
+        current_process = self.visible[self.current_process_index].process
+        try:
+            current_process.kill()
+            sleep(0.1)
+            self.refresh()
+        except AccessDenied:
+            pass

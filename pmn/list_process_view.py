@@ -1,8 +1,9 @@
 import curses
 from curses import window
+from typing import List
 
 import psutil as ps
-from psutil import Process, NoSuchProcess
+from psutil import Process, NoSuchProcess, AccessDenied
 
 from pmn.abstract_process_view import AbstractProcessView
 from pmn.info_format import InfoFormat
@@ -22,8 +23,8 @@ def _get_process(pid):
 class ListProcessView(AbstractProcessView):
     def __init__(self, screen, config):
         super().__init__(screen)
-        self.processes = None
-        self.visible_processes = None
+        self.processes: List[Process] = []
+        self.visible_processes: List[Process] = []
         self.layout = config.list_layout
         self.keymap = config.list_keymap
         self.pad: window = None
@@ -34,7 +35,7 @@ class ListProcessView(AbstractProcessView):
         self.current_process_index = 0
         self.page_scroll_offset = 0
 
-    def update_processes(self):
+    def refresh(self):
         self.processes = list(filter(
             lambda p: p and p.cmdline(),
             map(
@@ -44,14 +45,14 @@ class ListProcessView(AbstractProcessView):
         ))
         self.visible_processes = self.search_processes(self.search_string)
         # in case cursor was further down the list than the list length itself
-        if self.current_process_index > len(self.processes):
+        if self.current_process_index > len(self.processes) - 1:
             self.last()
 
     def show(self):
         self.screen.refresh()
         h, w = self.screen.getmaxyx()
 
-        self.update_processes()
+        self.refresh()
         self.pad = curses.newpad(len(self.visible_processes) if self.visible_processes else 1, w)
 
         for i, p in enumerate(self.visible_processes):
@@ -135,6 +136,14 @@ class ListProcessView(AbstractProcessView):
             self.current_process_index,
             self.pad
         )
+
+    def kill(self):
+        current_process = self.visible_processes[self.current_process_index]
+        try:
+            current_process.kill()
+            self.refresh()
+        except AccessDenied:
+            pass
 
     def search_processes(self, search_string):
         if not search_string:

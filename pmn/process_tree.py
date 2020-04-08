@@ -7,7 +7,7 @@ class ProcessTree:
         self.root = self.build_node(Process(1))
         self.render_tree = RenderTree(self.root)
 
-    def build_node(self, process):
+    def build_node(self, process: Process):
         return AnyNode(
             process=process,
             children=list(map(
