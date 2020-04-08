@@ -5,6 +5,8 @@ import os
 from pmn.list_process_view import ListProcessView
 from pmn.tree_process_view import TreeProcessView
 
+DEFAULT_CONFIG_PATH = '$HOME/.config/pmn/config.py'
+
 
 def _load_config(config_path):
     """
@@ -22,7 +24,9 @@ def _load_config(config_path):
 # TODO: refactor
 def _init_config(config_path):
     import pmn.default_config as default
-    if config_path:
+    if not config_path:
+        config_path = DEFAULT_CONFIG_PATH
+    if os.path.exists(os.path.expandvars(os.path.expanduser(config_path))):
         loaded = _load_config(config_path)
         default.colors = getattr(loaded, 'colors', default.colors)
         default.application_keymap = getattr(loaded, 'application_keymap', default.application_keymap)
