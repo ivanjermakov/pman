@@ -25,6 +25,15 @@ class TreeProcessView(AbstractProcessView):
         self.current_process_index = 0
         self.page_scroll_offset = 0
 
+    def refresh(self):
+        self.tree = ProcessTree()
+        self.processes = self.tree.flatten()
+        self.visible = list(filter(lambda n: ProcessTree.is_visible(n), self.processes))
+        self.screen.erase()
+        if self.current_process_index > len(self.processes):
+            self.last()
+        self.show()
+
     def show(self):
         self.screen.refresh()
         h, w = self.screen.getmaxyx()

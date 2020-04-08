@@ -110,6 +110,8 @@ def tree_keymap(tree_view: TreeProcessView):
             tree_view.last()
         if key == curses.KEY_RESIZE:
             tree_view.resize(h)
+        if key == ord('r'):
+            tree_view.refresh()
         if key == ord('c'):
             tree_view.trigger_collapse_current()
         if key in [ord('q'), 27, ord('t')]:

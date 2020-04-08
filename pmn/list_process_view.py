@@ -44,10 +44,8 @@ class ListProcessView(AbstractProcessView):
         ))
         self.visible_processes = self.search_processes(self.search_string)
         # in case cursor was further down the list than the list length itself
-        self.current_process_index = min(
-            self.current_process_index,
-            len(self.visible_processes) - 1
-        )
+        if self.current_process_index > len(self.processes):
+            self.last()
 
     def show(self):
         self.screen.refresh()
